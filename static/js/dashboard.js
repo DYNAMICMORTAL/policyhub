@@ -237,50 +237,168 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Display Training Materials results
-        if (data.training_materials) {
-            const training = data.training_materials;
+
+        // Display Training Materials results (comprehensive version)
+if (data.training_materials) {
+    const training = data.training_materials;
+    
+    // Training module content with better formatting
+    const moduleContent = training.training_module || 'Training module content will be displayed here.';
+    document.getElementById('trainingModule').innerHTML = formatTrainingModule(moduleContent);
+    
+    // Target audience info
+    document.getElementById('targetAudience').textContent = training.target_audience || 'Not specified';
+    document.getElementById('difficultyLevel').textContent = training.difficulty_level || 'Not specified';
+    document.getElementById('estimatedDuration').textContent = training.estimated_duration || 'Not specified';
+    
+    // Quiz questions with better formatting
+    const quizContainer = document.getElementById('quizQuestions');
+    quizContainer.innerHTML = '';
+    if (training.quiz_questions && training.quiz_questions.length > 0) {
+        training.quiz_questions.forEach((question, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'mb-4 p-3 border rounded bg-light';
             
-            // Training module content
-            document.getElementById('trainingModule').textContent = training.training_module || 'Training module content will be displayed here.';
-            
-            // Target audience info
-            document.getElementById('targetAudience').textContent = training.target_audience || 'Not specified';
-            document.getElementById('difficultyLevel').textContent = training.difficulty_level || 'Not specified';
-            document.getElementById('estimatedDuration').textContent = training.estimated_duration || 'Not specified';
-            
-            // Quiz questions
-            const quizContainer = document.getElementById('quizQuestions');
-            quizContainer.innerHTML = '';
-            if (training.quiz_questions && training.quiz_questions.length > 0) {
-                training.quiz_questions.forEach((question, index) => {
-                    const questionDiv = document.createElement('div');
-                    questionDiv.className = 'mb-3 p-3 border rounded';
-                    questionDiv.innerHTML = `
-                        <strong>Q${index + 1}:</strong> ${question.question || question}<br>
-                        ${question.options ? question.options.map((opt, i) => `<small class="text-muted">${String.fromCharCode(65 + i)}) ${opt}</small>`).join('<br>') : ''}
-                        ${question.answer ? `<br><small class="text-success"><strong>Answer:</strong> ${question.answer}</small>` : ''}
-                    `;
-                    quizContainer.appendChild(questionDiv);
-                });
-            } else {
-                quizContainer.innerHTML = '<p class="text-muted">No quiz questions available</p>';
+            let optionsHtml = '';
+            if (question.options && Array.isArray(question.options)) {
+                optionsHtml = question.options.map(opt => `<div class="form-check"><small class="text-muted">${opt}</small></div>`).join('');
             }
             
-            // Learning points
-            const learningContainer = document.getElementById('learningPoints');
-            learningContainer.innerHTML = '';
-            if (training.key_learning_points && training.key_learning_points.length > 0) {
-                training.key_learning_points.forEach(point => {
-                    const pointDiv = document.createElement('div');
-                    pointDiv.className = 'alert alert-info mb-2';
-                    pointDiv.innerHTML = `<i class="fas fa-check-circle"></i> ${point}`;
-                    learningContainer.appendChild(pointDiv);
-                });
-            } else {
-                learningContainer.innerHTML = '<p class="text-muted">No specific learning points available</p>';
-            }
-        }
+            questionDiv.innerHTML = `
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <strong class="text-primary">Q${index + 1}:</strong>
+                    <span class="badge bg-secondary">${training.difficulty_level || 'Standard'}</span>
+                </div>
+                <p class="mb-3">${question.question || question}</p>
+                ${optionsHtml}
+                ${question.correct_answer ? `<div class="mt-2"><small class="text-success"><strong>Answer:</strong> ${question.correct_answer}</small></div>` : ''}
+                ${question.explanation ? `<div class="mt-1"><small class="text-info"><strong>Explanation:</strong> ${question.explanation}</small></div>` : ''}
+            `;
+            quizContainer.appendChild(questionDiv);
+        });
+    } else {
+        quizContainer.innerHTML = '<div class="alert alert-info"><i class="fas fa-info-circle"></i> Quiz questions will be generated based on clause complexity</div>';
+    }
+    
+    // Learning points with icons
+    const learningContainer = document.getElementById('learningPoints');
+    learningContainer.innerHTML = '';
+    if (training.key_learning_points && training.key_learning_points.length > 0) {
+        training.key_learning_points.forEach((point, index) => {
+            const pointDiv = document.createElement('div');
+            pointDiv.className = 'alert alert-light border-start border-primary border-4 mb-2';
+            pointDiv.innerHTML = `
+                <div class="d-flex align-items-start">
+                    <i class="fas fa-lightbulb text-warning me-2 mt-1"></i>
+                    <div>
+                        <strong>Key Point ${index + 1}:</strong> ${point}
+                    </div>
+                </div>
+            `;
+            learningContainer.appendChild(pointDiv);
+        });
+    } else {
+        learningContainer.innerHTML = '<div class="alert alert-info"><i class="fas fa-info-circle"></i> Learning points will be customized for your training needs</div>';
+    }
+    
+    // Add new training sections
+    addTrainingObjectives(training, learningContainer);
+    addPracticalExamples(training, learningContainer);
+    addRolePlayScenarios(training, learningContainer);
+    addCommonMistakes(training, learningContainer);
+    addAssessmentCriteria(training, learningContainer);
+}
+
+// Helper functions for new training sections
+function addTrainingObjectives(training, container) {
+    if (training.training_objectives) {
+        const objectivesContainer = document.createElement('div');
+        objectivesContainer.className = 'mt-4';
+        objectivesContainer.innerHTML = `
+            <h6><i class="fas fa-target text-success"></i> Training Objectives</h6>
+            <div class="alert alert-success">
+                ${training.training_objectives.map((obj, i) => `
+                    <div class="d-flex align-items-start mb-2">
+                        <span class="badge bg-success me-2">${i + 1}</span>
+                        <span>${obj}</span>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        container.appendChild(objectivesContainer);
+    }
+}
+
+function addPracticalExamples(training, container) {
+    if (training.practical_examples) {
+        const examplesContainer = document.createElement('div');
+        examplesContainer.className = 'mt-4';
+        examplesContainer.innerHTML = `
+            <h6><i class="fas fa-users text-primary"></i> Practical Examples</h6>
+            <div class="alert alert-info">
+                <pre style="white-space: pre-wrap; font-family: inherit; margin-bottom: 0;">${training.practical_examples}</pre>
+            </div>
+        `;
+        container.appendChild(examplesContainer);
+    }
+}
+
+function addRolePlayScenarios(training, container) {
+    if (training.role_play_scenarios) {
+        const scenariosContainer = document.createElement('div');
+        scenariosContainer.className = 'mt-4';
+        scenariosContainer.innerHTML = `
+            <h6><i class="fas fa-theater-masks text-purple"></i> Role-Play Scenarios</h6>
+            <div class="alert alert-secondary">
+                <pre style="white-space: pre-wrap; font-family: inherit; margin-bottom: 0;">${training.role_play_scenarios}</pre>
+            </div>
+        `;
+        container.appendChild(scenariosContainer);
+    }
+}
+
+function addCommonMistakes(training, container) {
+    if (training.common_mistakes) {
+        const mistakesContainer = document.createElement('div');
+        mistakesContainer.className = 'mt-4';
+        mistakesContainer.innerHTML = `
+            <h6><i class="fas fa-exclamation-circle text-warning"></i> Common Mistakes to Avoid</h6>
+            <div class="alert alert-warning">
+                <pre style="white-space: pre-wrap; font-family: inherit; margin-bottom: 0;">${training.common_mistakes}</pre>
+            </div>
+        `;
+        container.appendChild(mistakesContainer);
+    }
+}
+
+function addAssessmentCriteria(training, container) {
+    if (training.assessment_criteria) {
+        const assessmentContainer = document.createElement('div');
+        assessmentContainer.className = 'mt-4';
+        assessmentContainer.innerHTML = `
+            <h6><i class="fas fa-clipboard-check text-info"></i> Assessment Criteria</h6>
+            <div class="alert alert-light border-info">
+                ${training.assessment_criteria.map(criteria => `
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <span>${criteria}</span>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        container.appendChild(assessmentContainer);
+    }
+}
+
+// Enhanced helper function to format training module content
+function formatTrainingModule(content) {
+    return content
+        .replace(/(\d+\.\s*[A-Z][A-Z\s]+):/g, '<h6 class="text-primary mt-3 mb-2"><i class="fas fa-bookmark me-1"></i>$1:</h6>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>')
+        .replace(/^/, '<p>')
+        .replace(/$/, '</p>');
+}
 
         // Display Benchmark Analysis results
         if (data.benchmark_analysis) {

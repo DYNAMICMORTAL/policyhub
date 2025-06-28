@@ -1,7 +1,9 @@
 import google.generativeai as genai
 import os
 import json
+import re
 from dotenv import load_dotenv
+from difflib import SequenceMatcher
 
 load_dotenv()
 
@@ -10,102 +12,263 @@ class BenchmarkAnalyzerAgent:
         api_key = os.getenv('GEMINI_API_KEY', 'your-gemini-api-key')
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
-        self.historical_clauses = self._load_historical_data()
+        
+        # Industry standard clause library for comparison
+        self.industry_standards = {
+            'exclusions': [
+                "This policy does not cover losses caused by war, invasion, acts of foreign enemies, hostilities, or warlike operations.",
+                "Losses arising from nuclear reaction, nuclear radiation, or radioactive contamination are excluded.",
+                "Damage caused by wear and tear, gradual deterioration, or inherent defects is not covered."
+            ],
+            'claims': [
+                "All claims must be reported to the insurer within 30 days of the loss occurrence.",
+                "The insured must provide all necessary documentation to support the claim.",
+                "Claims will be settled within 30 days of receiving all required documents."
+            ],
+            'liability': [
+                "The insurer's liability shall not exceed the sum insured specified in the policy schedule.",
+                "Coverage is subject to the terms, conditions, and exclusions contained herein.",
+                "The insurer reserves the right to investigate all claims before settlement."
+            ],
+            'termination': [
+                "This policy may be cancelled by either party with 30 days written notice.",
+                "Upon cancellation, unearned premium will be refunded on a pro-rata basis.",
+                "Policy automatically terminates upon sale or transfer of insured property."
+            ]
+        }
+        
+        # Similarity threshold for matches
+        self.similarity_threshold = 0.6
     
     def analyze_similarity(self, clause_text):
-        """Compare clause against historical policy wordings"""
+        """Analyze similarity with industry standards and provide benchmarking"""
         try:
-            # Get similarity analysis from LLM
-            similarity_analysis = self._get_similarity_analysis(clause_text)
+            # Find similar clauses in our database
+            similar_clauses = self._find_similar_clauses(clause_text)
             
-            # Calculate deviation score
-            deviation_score = self._calculate_deviation_score(clause_text)
+            # Calculate overall similarity score
+            similarity_score = self._calculate_similarity_score(clause_text, similar_clauses)
+            
+            # Get industry comparison using LLM
+            industry_comparison = self._get_industry_comparison(clause_text)
+            
+            # Generate analysis summary
+            analysis_summary = self._generate_analysis_summary(
+                clause_text, similarity_score, similar_clauses, industry_comparison
+            )
             
             return {
-                'similarity_score': similarity_analysis.get('similarity_score', 75),
-                'deviation_analysis': similarity_analysis.get('deviation_analysis', ''),
-                'unusual_terms': similarity_analysis.get('unusual_terms', []),
-                'industry_comparison': similarity_analysis.get('industry_comparison', ''),
-                'deviation_score': deviation_score,
-                'recommendations': similarity_analysis.get('recommendations', []),
-                'fraud_risk_indicator': deviation_score > 30
+                'similarity_score': similarity_score,
+                'similar_clauses': similar_clauses[:5],  # Top 5 matches
+                'industry_comparison': industry_comparison,
+                'analysis_summary': analysis_summary,
+                'benchmark_grade': self._get_benchmark_grade(similarity_score),
+                'recommendations': self._generate_recommendations(similarity_score, industry_comparison)
             }
             
         except Exception as e:
-            return {'error': f'Benchmark analysis failed: {str(e)}'}
+            return {
+                'error': f'Benchmark analysis failed: {str(e)}',
+                'similarity_score': 75,
+                'analysis_summary': 'No analysis summary available.',
+                'similar_clauses': [],
+                'industry_comparison': {
+                    'standard': 'Not available',
+                    'rating': 'Not rated',
+                    'recommendation': 'No specific recommendation'
+                }
+            }
     
-    def _get_similarity_analysis(self, clause_text):
-        """Use Gemini to analyze clause similarity"""
+    def _find_similar_clauses(self, clause_text):
+        """Find clauses similar to the input from industry standards"""
+        similar_clauses = []
+        clause_lower = clause_text.lower()
+        
+        # Search through all industry standard categories
+        for category, standards in self.industry_standards.items():
+            for standard_clause in standards:
+                similarity = self._calculate_text_similarity(clause_text, standard_clause)
+                
+                if similarity >= self.similarity_threshold:
+                    similar_clauses.append({
+                        'text': standard_clause,
+                        'similarity': round(similarity * 100, 1),
+                        'category': category,
+                        'match_type': 'exact' if similarity > 0.9 else 'similar'
+                    })
+        
+        # Sort by similarity score
+        similar_clauses.sort(key=lambda x: x['similarity'], reverse=True)
+        
+        # If no good matches, add some related clauses based on keywords
+        if not similar_clauses:
+            similar_clauses = self._find_keyword_matches(clause_text)
+        
+        return similar_clauses
+    
+    def _calculate_text_similarity(self, text1, text2):
+        """Calculate similarity between two text strings"""
+        # Use SequenceMatcher for basic similarity
+        basic_similarity = SequenceMatcher(None, text1.lower(), text2.lower()).ratio()
+        
+        # Calculate keyword similarity
+        keywords1 = set(re.findall(r'\b\w+\b', text1.lower()))
+        keywords2 = set(re.findall(r'\b\w+\b', text2.lower()))
+        
+        if not keywords1 or not keywords2:
+            return basic_similarity
+        
+        keyword_similarity = len(keywords1.intersection(keywords2)) / len(keywords1.union(keywords2))
+        
+        # Weighted average
+        return (basic_similarity * 0.6) + (keyword_similarity * 0.4)
+    
+    def _find_keyword_matches(self, clause_text):
+        """Find matches based on keywords when no direct similarity found"""
+        keyword_matches = []
+        clause_keywords = set(re.findall(r'\b\w+\b', clause_text.lower()))
+        
+        insurance_keywords = {
+            'coverage', 'claim', 'premium', 'deductible', 'liability',
+            'exclusion', 'loss', 'damage', 'insured', 'policy'
+        }
+        
+        relevant_keywords = clause_keywords.intersection(insurance_keywords)
+        
+        if 'claim' in relevant_keywords:
+            keyword_matches.extend([
+                {
+                    'text': 'Standard claims must be reported within reasonable time',
+                    'similarity': 45.0,
+                    'category': 'claims',
+                    'match_type': 'keyword'
+                }
+            ])
+        
+        if 'exclusion' in relevant_keywords or 'exclude' in clause_text.lower():
+            keyword_matches.extend([
+                {
+                    'text': 'Common exclusions apply to extraordinary circumstances',
+                    'similarity': 40.0,
+                    'category': 'exclusions',
+                    'match_type': 'keyword'
+                }
+            ])
+        
+        return keyword_matches
+    
+    def _calculate_similarity_score(self, clause_text, similar_clauses):
+        """Calculate overall similarity score based on matches found"""
+        if not similar_clauses:
+            return 25  # Low score if no matches
+        
+        # Get the best match score
+        best_match = max(similar_clauses, key=lambda x: x['similarity'])
+        best_score = best_match['similarity']
+        
+        # Adjust based on number of matches
+        match_bonus = min(10, len(similar_clauses) * 2)
+        
+        final_score = min(100, best_score + match_bonus)
+        return round(final_score)
+    
+    def _get_industry_comparison(self, clause_text):
+        """Get industry comparison analysis using LLM"""
         prompt = f"""
-        Analyze this insurance clause compared to standard industry practices:
+        Compare this insurance clause with industry standards:
         
         Clause: {clause_text}
         
-        Evaluate:
-        1. How similar is this to typical insurance clauses? (0-100 score)
-        2. Any unusual or non-standard terms?
-        3. Deviations from industry norms
-        4. Potential red flags
+        Analyze:
+        1. How it compares to typical industry language
+        2. Whether it's customer-friendly or industry-standard
+        3. Any recommendations for improvement
         
         Provide response in JSON format:
         {{
-            "similarity_score": 0-100,
-            "deviation_analysis": "brief explanation",
-            "unusual_terms": ["term1", "term2"],
-            "industry_comparison": "how it compares to standard",
-            "recommendations": ["recommendation1", "recommendation2"]
+            "standard": "Industry standard assessment",
+            "rating": "Above Average/Average/Below Average",
+            "recommendation": "Specific recommendation"
         }}
         """
         
-        response = self.model.generate_content(
-            prompt,
-            generation_config=genai.types.GenerationConfig(
-                max_output_tokens=400,
-                temperature=0.2
-            )
-        )
-        
         try:
+            response = self.model.generate_content(
+                prompt,
+                generation_config=genai.types.GenerationConfig(
+                    max_output_tokens=200,
+                    temperature=0.3
+                )
+            )
+            
             response_text = response.text.strip()
-            # Remove any markdown formatting
             if response_text.startswith('```json'):
                 response_text = response_text.replace('```json', '').replace('```', '').strip()
+            
             return json.loads(response_text)
+            
         except:
+            # Fallback analysis
+            word_count = len(clause_text.split())
+            complexity = 'Complex' if word_count > 30 else 'Standard'
+            
             return {
-                'similarity_score': 75,
-                'deviation_analysis': 'Analysis not available',
-                'unusual_terms': [],
-                'industry_comparison': 'Standard clause',
-                'recommendations': []
+                'standard': f'{complexity} language structure typical for insurance',
+                'rating': 'Average',
+                'recommendation': 'Consider simplifying for better customer understanding'
             }
     
-    def _calculate_deviation_score(self, clause_text):
-        """Calculate deviation score based on various factors"""
-        # Simple scoring based on clause characteristics
-        base_score = 10
+    def _generate_analysis_summary(self, clause_text, similarity_score, similar_clauses, industry_comparison):
+        """Generate comprehensive analysis summary"""
+        summary_parts = []
         
-        # Check for unusual length
-        word_count = len(clause_text.split())
-        if word_count > 100:
-            base_score += 10
-        elif word_count < 20:
-            base_score += 5
+        # Similarity assessment
+        if similarity_score >= 80:
+            summary_parts.append("High similarity to industry standards")
+        elif similarity_score >= 60:
+            summary_parts.append("Moderate alignment with industry practices")
+        else:
+            summary_parts.append("Limited similarity to standard industry clauses")
         
-        # Check for complex legal terms
-        complex_terms = [
-            'notwithstanding', 'heretofore', 'whereupon', 'aforementioned',
-            'pursuant to', 'inasmuch as', 'provided that'
-        ]
+        # Match quality
+        if similar_clauses:
+            best_match = max(similar_clauses, key=lambda x: x['similarity'])
+            summary_parts.append(f"Best match: {best_match['similarity']}% similarity")
         
-        for term in complex_terms:
-            if term.lower() in clause_text.lower():
-                base_score += 5
+        # Industry rating
+        rating = industry_comparison.get('rating', 'Average')
+        summary_parts.append(f"Industry rating: {rating}")
         
-        return min(100, base_score)
+        return '. '.join(summary_parts) + '.'
     
-    def _load_historical_data(self):
-        """Load historical clause data for comparison"""
-        # In a real implementation, this would load from a database
-        # For now, return empty list
-        return []
+    def _get_benchmark_grade(self, similarity_score):
+        """Convert similarity score to letter grade"""
+        if similarity_score >= 90:
+            return 'A+'
+        elif similarity_score >= 80:
+            return 'A'
+        elif similarity_score >= 70:
+            return 'B'
+        elif similarity_score >= 60:
+            return 'C'
+        else:
+            return 'D'
+    
+    def _generate_recommendations(self, similarity_score, industry_comparison):
+        """Generate actionable recommendations"""
+        recommendations = []
+        
+        if similarity_score < 60:
+            recommendations.append("Consider aligning language with industry standards")
+        
+        if similarity_score > 90:
+            recommendations.append("Clause follows industry best practices")
+        
+        # Add recommendation from industry comparison
+        if industry_comparison.get('recommendation'):
+            recommendations.append(industry_comparison['recommendation'])
+        
+        if not recommendations:
+            recommendations.append("Clause appears to meet standard industry requirements")
+        
+        return recommendations

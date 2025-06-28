@@ -78,6 +78,7 @@ class AdvancedAnalytics:
                 'risk_analyzer': 'OPTIMAL'
             }
         }
+    
     def __init__(self):
         self.irdai_guidelines = {
             'readability_standards': {

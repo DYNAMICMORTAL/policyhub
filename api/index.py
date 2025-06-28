@@ -1,14 +1,15 @@
 import sys
 import os
 
-# Add the parent directory to Python path
+# Add the parent directory to Python path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+# Import the Flask app
 from app import app
 
-# Vercel expects a handler function
+# Vercel expects this handler
 def handler(request):
-    return app(request.environ, lambda status, headers: None)
+    return app(request)
 
 # For compatibility
 application = app

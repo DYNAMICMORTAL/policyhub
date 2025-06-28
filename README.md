@@ -274,3 +274,39 @@ policyintellihub/
 - **Audit Trails**: Complete processing history and compliance records
 - **Security**: Enterprise-grade security protocols and data encryption
 
+---
+
+# PolicyIntelliHub - AI-Powered Insurance Policy Analysis
+
+## Deploy to Vercel (No CLI Required)
+
+### Step 1: Prepare Your Repository
+1. Upload your project to GitHub
+2. Make sure all files are committed and pushed
+
+### Step 2: Deploy via Vercel Website
+1. Go to [vercel.com](https://vercel.com)
+2. Sign up/login with your GitHub account
+3. Click "New Project"
+4. Import your GitHub repository
+5. Vercel will automatically detect it's a Python project
+
+### Step 3: Configure Environment Variables
+In the Vercel dashboard, go to your project settings and add:
+- `GEMINI_API_KEY`: Your Google Gemini API key
+- `SECRET_KEY`: Any secure random string
+- `VERCEL_ENV`: production
+
+### Step 4: Deploy
+Click "Deploy" and Vercel will build and deploy your app!
+
+## Features
+- 🤖 7 Specialized AI Agents
+- 📊 Enterprise Analytics
+- 🌍 Multi-language Support
+- 📈 Compliance Monitoring
+- 🔒 Security & Audit Trails
+
+## Quick Test
+Once deployed, visit: `https://your-app.vercel.app/health`
+

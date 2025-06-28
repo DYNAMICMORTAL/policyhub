@@ -1,0 +1,64 @@
+SAMPLE INSURANCE POLICY CLAUSES FOR TESTING
+
+=== COMPLEX LEGAL LANGUAGE (High Risk) ===
+Notwithstanding any provision herein contained to the contrary, the insurer shall not be liable for any loss or damage caused directly or indirectly by nuclear reaction, nuclear radiation, or radioactive contamination, whether controlled or uncontrolled, howsoever such nuclear reaction, nuclear radiation, or radioactive contamination may be caused, provided that nothing herein contained shall exonerate the insurer from liability in respect of physical loss or damage to the property insured directly caused by nuclear reaction in any nuclear installation owned or operated by the insured.
+
+=== VAGUE LANGUAGE (Compliance Issues) ===
+The company may, at its discretion, settle claims as deemed appropriate from time to time, subject to reasonable efforts to verify the circumstances, notwithstanding any other provisions contained herein, and provided that such settlement shall be subject to the terms and conditions as the company may determine.
+
+=== TECHNICAL TERMINOLOGY (Medium Risk) ===
+Coverage applies to sudden and accidental pollution of surface water, groundwater, or soil on or off the insured premises, provided such pollution is caused by the escape, seepage, or discharge of pollutants from the insured premises during the policy period, and further provided that such pollution is not excluded under any other provision of this policy.
+
+=== CUSTOMER-FRIENDLY LANGUAGE (Low Risk) ===
+If your car is stolen, we will pay you the current market value of your vehicle. You must report the theft to police within 24 hours and provide us with a copy of the police report.
+
+=== STANDARD EXCLUSION CLAUSE ===
+This policy does not cover losses caused by war, invasion, acts of foreign enemies, hostilities, or warlike operations, whether war is declared or not. It also excludes damage from nuclear reactions, radiation, or radioactive contamination.
+
+=== CLAIMS NOTIFICATION REQUIREMENT ===
+You must report any claim to us within 30 days of when the loss happened. If you cannot report within 30 days due to reasons beyond your control, please contact us as soon as possible. You must also provide all documents we need to process your claim.
+
+=== DUTY TO MINIMIZE LOSS ===
+After a loss occurs, you must take reasonable steps to prevent further damage and protect the property. You should allow our representatives to inspect the damage. Do not admit fault or make any payments without our written permission.
+
+=== AUTOMATIC TERMINATION ===
+This policy automatically ends if you sell, transfer, or give away the insured property, unless we agree to continue coverage in writing. If the policy ends early, we will refund part of your premium if no claims were made.
+
+=== PREMIUM PAYMENT TERMS ===
+Your premium is due when your policy starts. If you don't pay within 30 days, your policy will be cancelled from the beginning. Partial payments don't count unless we confirm receipt in writing.
+
+=== ARBITRATION CLAUSE ===
+If we disagree about anything related to this policy, we will resolve it through arbitration according to Indian law. The arbitration will take place in Mumbai and will be conducted in English.
+
+
+
+
+=== PROPERTY DAMAGE COVERAGE (Medium Risk) ===
+The insurer agrees to indemnify the insured for direct physical loss or damage to the property described in the schedule, occurring during the policy period, subject to the terms, conditions, and exclusions herein.
+
+=== FIRE EXCLUSION CLAUSE (Standard Exclusion) ===
+This policy does not cover loss or damage caused directly or indirectly by fire resulting from war, invasion, civil commotion, or any act of terrorism, whether declared or not.
+
+=== PERSONAL ACCIDENT BENEFIT (Low Risk) ===
+If the insured person suffers bodily injury solely and directly as a result of an accident, the company will pay the sum insured as specified in the policy schedule, provided the injury results in death or permanent disability within 12 months of the accident.
+
+=== THIRD PARTY LIABILITY (High Risk) ===
+The insurer will indemnify the insured against legal liability for damages and claimant’s costs and expenses in respect of accidental bodily injury or property damage to any third party, arising out of the use of the insured vehicle.
+
+=== FLOOD AND NATURAL CALAMITY COVER (Medium Risk) ===
+Loss or damage to the insured property caused by flood, storm, cyclone, earthquake, or other natural calamities is covered, provided such events are not otherwise excluded under this policy.
+
+=== FRAUDULENT CLAIMS EXCLUSION (Compliance) ===
+If any claim under this policy is in any respect fraudulent or if any fraudulent means or devices are used by the insured or anyone acting on their behalf to obtain any benefit under this policy, all benefits under this policy shall be forfeited.
+
+=== CLAIM PROCEDURE (Customer-Friendly) ===
+To make a claim, notify us within 48 hours of the incident by calling our helpline or emailing claims@insurer.com. Submit all required documents, including proof of loss and police reports if applicable.
+
+=== CANCELLATION BY INSURED (Standard Clause) ===
+The insured may cancel this policy at any time by giving seven days’ written notice to the insurer. The insurer will refund the premium for the unexpired period, provided no claim has been made during the policy period.
+
+=== SUBROGATION CLAUSE (Technical) ===
+Upon payment of any claim under this policy, the insurer shall be subrogated to all the rights and remedies of the insured against any third party in respect of such loss or damage, to the extent of such payment.
+
+=== ARBITRATION AND JURISDICTION (Legal) ===
+If any dispute arises as to the amount of any claim, such dispute shall be referred to arbitration in accordance with the Arbitration and Conciliation Act, 1996. The courts at Mumbai shall have exclusive jurisdiction.

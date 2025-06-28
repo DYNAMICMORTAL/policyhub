@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agent Test</title>
+</head>
+<body>
+    <h2>Quick Test of All Agent Results</h2>
+    <p>Testing clause: "The insured shall be liable for all damages arising from accidents during the policy period."</p>
+    
+    <button onclick="testAnalysis()">Test Analysis</button>
+    <div id="results"></div>
+
+    <script>
+        async function testAnalysis() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>Analyzing...</p>';
+            
+            try {
+                const response = await fetch('/analyze-clause', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        clause_text: "The insured shall be liable for all damages arising from accidents during the policy period."
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    resultsDiv.innerHTML = `<p style="color:red">Error: ${data.error}</p>`;
+                    return;
+                }
+                
+                const agents = [
+                    'plain_english', 'compliance_check', 'customer_scenario', 
+                    'multilingual', 'risk_score', 'training_materials', 'benchmark_analysis'
+                ];
+                
+                let html = '<h3>Agent Results:</h3><ul>';
+                agents.forEach(agent => {
+                    if (data[agent] && Object.keys(data[agent]).length > 0) {
+                        html += `<li style="color:green">✓ ${agent} - Data received</li>`;
+                    } else {
+                        html += `<li style="color:red">✗ ${agent} - No data</li>`;
+                    }
+                });
+                html += '</ul>';
+                
+                // Show sample data
+                html += '<h3>Sample Data:</h3>';
+                if (data.plain_english) {
+                    html += `<p><strong>Plain English:</strong> ${data.plain_english.plain_english_text}</p>`;
+                }
+                if (data.risk_score) {
+                    html += `<p><strong>Risk Score:</strong> ${data.risk_score.risk_score}/100 (${data.risk_score.risk_level})</p>`;
+                }
+                if (data.compliance_check) {
+                    html += `<p><strong>Compliance:</strong> ${data.compliance_check.compliance_score}/100 (${data.compliance_check.status})</p>`;
+                }
+                if (data.training_materials) {
+                    html += `<p><strong>Training:</strong> Module available for ${data.training_materials.target_audience}</p>`;
+                }
+                if (data.benchmark_analysis) {
+                    html += `<p><strong>Benchmark:</strong> ${data.benchmark_analysis.similarity_score}% similarity</p>`;
+                }
+                
+                resultsDiv.innerHTML = html;
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<p style="color:red">Network error: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

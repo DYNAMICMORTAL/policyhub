@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - PolicyIntelliHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-shield-alt"></i> PolicyIntelliHub
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1><i class="fas fa-chart-bar"></i> Analytics Dashboard</h1>
+                <p class="text-muted">Policy analysis insights and metrics</p>
+            </div>
+        </div>
+
+        <!-- Key Metrics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h3>{{ data.total_analyses }}</h3>
+                                <p class="mb-0">Total Analyses</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-file-alt fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h3>{{ data.avg_readability_improvement }}%</h3>
+                                <p class="mb-0">Avg. Readability Improvement</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-chart-line fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h3>{{ data.compliance_issues_found }}</h3>
+                                <p class="mb-0">Compliance Issues Found</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-exclamation-triangle fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h3>{{ data.languages_supported }}</h3>
+                                <p class="mb-0">Languages Supported</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-globe fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Analysis Trends</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="trendsChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Compliance Distribution</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="complianceChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Analyses Table -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Recent Analyses</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if data.recent_analyses %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Clause Preview</th>
+                                        <th>Readability Improvement</th>
+                                        <th>Compliance Score</th>
+                                        <th>Risk Level</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for analysis in data.recent_analyses %}
+                                    <tr>
+                                        <td>{{ analysis.timestamp[:10] if analysis.timestamp else 'N/A' }}</td>
+                                        <td>{{ analysis.original_clause[:50] + '...' if analysis.original_clause and analysis.original_clause|length > 50 else analysis.original_clause or 'N/A' }}</td>
+                                        <td>
+                                            {% set readability = analysis.plain_english.readability_improvement if analysis.plain_english and analysis.plain_english.readability_improvement is defined else 0 %}
+                                            {% if readability != 0 %}
+                                                <span class="badge bg-{{ 'success' if readability > 10 else 'warning' if readability > 0 else 'danger' }}">
+                                                    +{{ "%.1f"|format(readability) }} points
+                                                </span>
+                                                <small class="d-block text-muted mt-1">
+                                                    {% if analysis.plain_english.improved_metrics.flesch_score %}
+                                                        {{ "%.1f"|format(analysis.plain_english.improved_metrics.flesch_score) }} Flesch Score
+                                                    {% endif %}
+                                                </small>
+                                            {% else %}
+                                                <span class="badge bg-secondary">N/A</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% set compliance = analysis.compliance_check.compliance_score if analysis.compliance_check and analysis.compliance_check.compliance_score is defined else 0 %}
+                                            {% if compliance != 0 %}
+                                                <span class="badge bg-{{ 'success' if compliance >= 80 else 'warning' if compliance >= 60 else 'danger' }}">
+                                                    {{ compliance }}/100
+                                                </span>
+                                                <small class="d-block text-muted mt-1">
+                                                    {% set status = analysis.compliance_check.status if analysis.compliance_check and analysis.compliance_check.status else 'unknown' %}
+                                                    {{ status.replace('_', ' ').title() }}
+                                                </small>
+                                            {% else %}
+                                                <span class="badge bg-secondary">N/A</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% set risk_level = analysis.risk_score.risk_level if analysis.risk_score and analysis.risk_score.risk_level is defined else 'N/A' %}
+                                            <span class="badge bg-{{ 'danger' if risk_level == 'High' else 'warning' if risk_level == 'Medium' else 'success' if risk_level != 'N/A' else 'secondary' }}">
+                                                {{ risk_level }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="text-center text-muted">
+                            <i class="fas fa-chart-bar fa-3x mb-3"></i>
+                            <p>No analysis data available yet. Start analyzing policy clauses to see insights here.</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Real data from analytics
+        const analyticsData = {{ data | tojson | safe }};
+        
+        // Prepare trend data from recent analyses
+        const trendData = prepareTrendData(analyticsData.recent_analyses || []);
+        const complianceData = prepareComplianceData(analyticsData.recent_analyses || []);
+        
+        // Trends Chart
+        const trendsCtx = document.getElementById('trendsChart').getContext('2d');
+        new Chart(trendsCtx, {
+            type: 'line',
+            data: {
+                labels: trendData.labels,
+                datasets: [{
+                    label: 'Analyses Performed',
+                    data: trendData.data,
+                    borderColor: '#4CAF50',
+                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                    tension: 0.1,
+                    fill: true,
+                    yAxisID: 'y'
+                }, {
+                    label: 'Avg Readability Score',
+                    data: trendData.readabilityData,
+                    borderColor: '#2196F3',
+                    backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                    tension: 0.1,
+                    fill: false,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Number of Analyses'
+                        },
+                        beginAtZero: true
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Readability Score'
+                        },
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                    }
+                }
+            }
+        });
+        
+        // Compliance Chart
+        const complianceCtx = document.getElementById('complianceChart').getContext('2d');
+        new Chart(complianceCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Compliant', 'Needs Review', 'High Risk'],
+                datasets: [{
+                    data: [complianceData.compliant, complianceData.needsReview, complianceData.highRisk],
+                    backgroundColor: [
+                        '#4CAF50',
+                        '#FF9800',
+                        '#F44336'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        function prepareTrendData(recentAnalyses) {
+            if (!recentAnalyses || recentAnalyses.length === 0) {
+                return {
+                    labels: ['No Data'],
+                    data: [0],
+                    readabilityData: [0]
+                };
+            }
+            
+            // Group analyses by date and calculate daily averages
+            const groupedData = {};
+            const readabilityData = {};
+            
+            recentAnalyses.forEach(analysis => {
+                const date = analysis.timestamp ? analysis.timestamp.split('T')[0] : 'Unknown';
+                groupedData[date] = (groupedData[date] || 0) + 1;
+                
+                // Calculate average readability improvement for the date
+                const readabilityImprovement = analysis.plain_english?.readability_improvement || 0;
+                if (!readabilityData[date]) {
+                    readabilityData[date] = { total: 0, count: 0 };
+                }
+                readabilityData[date].total += readabilityImprovement;
+                readabilityData[date].count += 1;
+            });
+            
+            // Get last 7 days and sort them chronologically
+            const sortedDates = Object.keys(groupedData).sort();
+            const last7Days = sortedDates.slice(-7);
+            
+            // If we don't have 7 days, fill in missing days with 0
+            const today = new Date();
+            const labels = [];
+            const data = [];
+            const readabilityAvgData = [];
+            
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toISOString().split('T')[0];
+                
+                labels.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+                data.push(groupedData[dateStr] || 0);
+                
+                const dayData = readabilityData[dateStr];
+                readabilityAvgData.push(dayData ? Math.round((dayData.total / dayData.count) * 10) / 10 : 0);
+            }
+            
+            return {
+                labels: labels,
+                data: data,
+                readabilityData: readabilityAvgData
+            };
+        }
+        
+        function prepareComplianceData(recentAnalyses) {
+            if (!recentAnalyses || recentAnalyses.length === 0) {
+                return { compliant: 0, needsReview: 0, highRisk: 0 };
+            }
+            
+            let compliant = 0, needsReview = 0, highRisk = 0;
+            
+            recentAnalyses.forEach(analysis => {
+                const status = analysis.compliance_check?.status;
+                switch(status) {
+                    case 'compliant':
+                        compliant++;
+                        break;
+                    case 'needs_review':
+                        needsReview++;
+                        break;
+                    case 'high_risk':
+                        highRisk++;
+                        break;
+                    default:
+                        needsReview++; // Default to needs review if status is unclear
+                }
+            });
+            
+            return { compliant, needsReview, highRisk };
+        }
+    </script>
+</body>
+</html>

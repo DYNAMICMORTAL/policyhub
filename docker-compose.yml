@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - FLASK_ENV=production
+      - SECRET_KEY=${SECRET_KEY}
+      - MAX_CLAUSES_PER_DOCUMENT=20
+      - DEFAULT_LANGUAGE=english
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/uploads
+      - ./reports:/app/reports
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Add Redis for caching (enterprise feature)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  redis_data:

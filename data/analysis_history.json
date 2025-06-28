@@ -1909,5 +1909,217 @@
       "security_classification": "CONFIDENTIAL",
       "data_retention_policy": "7_years"
     }
+  },
+  {
+    "analysis_id": "76205078f063",
+    "processing_model": "gemini-2.0-flash-exp",
+    "original_clause": "Notwithstanding any provision herein contained to the contrary, the insurer shall not be liable for any loss or damage caused directly or indirectly by nuclear reaction, nuclear radiation, or radioactive contamination, whether controlled or uncontrolled, howsoever such nuclear reaction, nuclear radiation, or radioactive contamination may be caused, provided that nothing herein contained shall exonerate the insurer from liability in respect of physical loss or damage to the property insured directly caused by nuclear reaction in any nuclear installation owned or operated by the insured.\n\n=== VAGUE LANGUAGE (Compliance Issues) ===\nThe company may, at its discretion, settle claims as deemed appropriate from time to time, subject to reasonable efforts to verify the circumstances, notwithstanding any other provisions contained herein, and provided that such settlement shall be subject to the terms and conditions as the company may determine.\n\n=== TECHNICAL TERMINOLOGY (Medium Risk) ===\nCoverage applies to sudden and accidental pollution of surface water, groundwater, or soil on or off the insured premises, provided such pollution is caused by the escape, seepage, or discharge of pollutants from the insured premises during the policy period, and further provided that such pollution is not excluded under any other provision of this policy.\n\n=== CUSTOMER-FRIENDLY LANGUAGE (Low Risk) ===\nIf your car is stolen, we will pay you the current market value of your vehicle. You must report the theft to police within 24 hours and provide us with a copy of the police report.\n\n=== STANDARD EXCLUSION CLAUSE ===\nThis policy does not cover losses caused by war, invasion, acts of foreign enemies, hostilities, or warlike operations, whether war is declared or not. It also excludes damage from nuclear reactions, radiation, or radioactive contamination.\n\n=== CLAIMS NOTIFICATION REQUIREMENT ===\nYou must report any claim to us within 30 days of when the loss happened. If you cannot report within 30 days due to reasons beyond your control, please contact us as soon as possible. You must also provide all documents we need to process your claim.\n\n=== DUTY TO MINIMIZE LOSS ===\nAfter a loss occurs, you must take reasonable steps to prevent further damage and protect the property. You should allow our representatives to inspect the damage. Do not admit fault or make any payments without our written permission.\n\n=== AUTOMATIC TERMINATION ===\nThis policy automatically ends if you sell, transfer, or give away the insured property, unless we agree to continue coverage in writing. If the policy ends early, we will refund part of your premium if no claims were made.\n\n=== PREMIUM PAYMENT TERMS ===\nYour premium is due when your policy starts. If you don't pay within 30 days, your policy will be cancelled from the beginning. Partial payments don't count unless we confirm receipt in writing.\n\n=== ARBITRATION CLAUSE ===\nIf we disagree about anything related to this policy, we will resolve it through arbitration according to Indian law. The arbitration will take place in Mumbai and will be conducted in English.",
+    "timestamp": "2025-06-28T16:16:28.054986",
+    "plain_english": {
+      "original_text": "Notwithstanding any provision herein contained to the contrary, the insurer shall not be liable for any loss or damage caused directly or indirectly by nuclear reaction, nuclear radiation, or radioactive contamination, whether controlled or uncontrolled, howsoever such nuclear reaction, nuclear radiation, or radioactive contamination may be caused, provided that nothing herein contained shall exonerate the insurer from liability in respect of physical loss or damage to the property insured directly caused by nuclear reaction in any nuclear installation owned or operated by the insured.\n\n=== VAGUE LANGUAGE (Compliance Issues) ===\nThe company may, at its discretion, settle claims as deemed appropriate from time to time, subject to reasonable efforts to verify the circumstances, notwithstanding any other provisions contained herein, and provided that such settlement shall be subject to the terms and conditions as the company may determine.\n\n=== TECHNICAL TERMINOLOGY (Medium Risk) ===\nCoverage applies to sudden and accidental pollution of surface water, groundwater, or soil on or off the insured premises, provided such pollution is caused by the escape, seepage, or discharge of pollutants from the insured premises during the policy period, and further provided that such pollution is not excluded under any other provision of this policy.\n\n=== CUSTOMER-FRIENDLY LANGUAGE (Low Risk) ===\nIf your car is stolen, we will pay you the current market value of your vehicle. You must report the theft to police within 24 hours and provide us with a copy of the police report.\n\n=== STANDARD EXCLUSION CLAUSE ===\nThis policy does not cover losses caused by war, invasion, acts of foreign enemies, hostilities, or warlike operations, whether war is declared or not. It also excludes damage from nuclear reactions, radiation, or radioactive contamination.\n\n=== CLAIMS NOTIFICATION REQUIREMENT ===\nYou must report any claim to us within 30 days of when the loss happened. If you cannot report within 30 days due to reasons beyond your control, please contact us as soon as possible. You must also provide all documents we need to process your claim.\n\n=== DUTY TO MINIMIZE LOSS ===\nAfter a loss occurs, you must take reasonable steps to prevent further damage and protect the property. You should allow our representatives to inspect the damage. Do not admit fault or make any payments without our written permission.\n\n=== AUTOMATIC TERMINATION ===\nThis policy automatically ends if you sell, transfer, or give away the insured property, unless we agree to continue coverage in writing. If the policy ends early, we will refund part of your premium if no claims were made.\n\n=== PREMIUM PAYMENT TERMS ===\nYour premium is due when your policy starts. If you don't pay within 30 days, your policy will be cancelled from the beginning. Partial payments don't count unless we confirm receipt in writing.\n\n=== ARBITRATION CLAUSE ===\nIf we disagree about anything related to this policy, we will resolve it through arbitration according to Indian law. The arbitration will take place in Mumbai and will be conducted in English.",
+      "plain_english_text": "We are not responsible for loss or damage caused by nuclear events. This includes nuclear reactions, radiation, or contamination. It doesn't matter how the nuclear event happens or if it's controlled. However, we *will* cover direct physical damage to your property. This only applies if the damage is from a nuclear reaction. And it must happen in your own nuclear facility.",
+      "original_metrics": {
+        "flesch_score": 30.01,
+        "grade_level": 14.99,
+        "word_count": 494
+      },
+      "improved_metrics": {
+        "flesch_score": 45.35,
+        "grade_level": 9.46,
+        "word_count": 61
+      },
+      "readability_improvement": 15.34,
+      "meets_irdai_standards": false
+    },
+    "compliance_check": {
+      "compliance_score": 40,
+      "status": "high_risk",
+      "vague_language_detected": [
+        {
+          "phrase": "notwithstanding",
+          "recommendation": "Replace \"notwithstanding\" with specific terms or timelines"
+        },
+        {
+          "phrase": "reasonable effort",
+          "recommendation": "Replace \"reasonable effort\" with specific terms or timelines"
+        },
+        {
+          "phrase": "from time to time",
+          "recommendation": "Replace \"from time to time\" with specific terms or timelines"
+        },
+        {
+          "phrase": "subject to",
+          "recommendation": "Replace \"subject to\" with specific terms or timelines"
+        }
+      ],
+      "regulatory_issues": [
+        "Clause is lengthy and may be difficult to understand",
+        "Contains legal jargon: notwithstanding"
+      ],
+      "recommendations": [
+        "Consider splitting into multiple shorter clauses",
+        "Replace legal jargon with plain English terms"
+      ],
+      "irdai_compliant": false
+    },
+    "customer_scenario": {
+      "main_scenario": "Okay, here's a relatable example for that nuclear exclusion clause:\n\n**Example: If a nuclear power plant near your home has an accident and releases radiation that contaminates your property, this policy won't cover the damage. However, if the nuclear reaction happens *inside* your own insured business, the policy will cover the damage.**",
+      "real_life_examples": "Here are three real-life examples for the nuclear exclusion clause you provided:\n\n1.  **Nuclear Power Plant Accident:** A nuclear power plant experiences a meltdown, releasing radiation that contaminates a nearby factory insured under a standard property policy. The insurance company denies the factory's claim for contamination cleanup and business interruption due to the nuclear exclusion clause.\n\n2.  **Medical Isotope Spill:** A hospital's radiology department accidentally spills radioactive isotopes used for medical imaging, contaminating the building. The hospital's property insurance policy denies coverage for the cleanup costs, citing the exclusion for radioactive contamination, regardless of its source.\n\n3.  **Research Lab Incident:** A university research lab working with radioactive materials experiences a minor accident, leading to a small release of radiation. While the university has a special nuclear liability policy, its standard property insurance policy denies coverage for any related building damage or equipment contamination, even though the release was contained and relatively minor.",
+      "customer_script": "Okay, here are some conversation starters and explanations for each of the clauses, designed to be friendly and clear for insurance agents to use with their customers. I've broken it down by clause and provided a few options for each, depending on the agent's style and the customer's level of understanding.\n\n**Clause 1: Nuclear Exclusion**\n\n*   **Agent:** \"Okay, let's talk about something a little unusual, but important. This part of the policy talks about nuclear events. Basically, it says that we don't cover damage caused directly or indirectly by nuclear reactions, radiation, or contamination.\"\n\n    *   **Option 1 (Simple):** \"Think of it like this: if there's",
+      "simple_explanation": "Okay, here's the first clause explained simply:\n\nThe insurance won't pay if a nuclear thing causes damage, unless it's your own nuclear place that messes up."
+    },
+    "multilingual": {
+      "error": "Translation failed: 429 You exceeded your current quota. Please migrate to Gemini 2.0 Flash Preview (Image Generation) (models/gemini-2.0-flash-preview-image-generation) for higher quota limits. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_requests_per_model\"\n  quota_id: \"GenerateRequestsPerMinutePerProjectPerModel\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-2.0-flash-exp\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n  quota_value: 10\n}\n, links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, retry_delay {\n  seconds: 9\n}\n]"
+    },
+    "risk_score": {
+      "risk_score": 100,
+      "risk_level": "High",
+      "financial_risk": "Medium",
+      "dispute_potential": "High",
+      "risky_phrases_found": [
+        "any loss"
+      ],
+      "mitigation_suggestions": [
+        "Review and clarify high-risk language",
+        "Consider breaking into shorter, clearer clauses",
+        "Replace vague terms with specific criteria"
+      ],
+      "explanation": "Contains 1 high-risk phrases; Clause is lengthy and complex; Contains 5 vague terms requiring clarification (Fallback analysis - LLM unavailable)",
+      "requires_underwriter_review": true,
+      "fallback_analysis": true
+    },
+    "training_materials": {
+      "training_module": "## Training Module: Nuclear Exclusion Clause\n\n**Policy Clause:** Notwithstanding any provision herein contained to the contrary, the insurer shall not be liable for any loss or damage caused directly or indirectly by nuclear reaction, nuclear radiation, or radioactive contamination, whether controlled or uncontrolled, howsoever such nuclear reaction, nuclear radiation, or radioactive contamination may be caused, provided that nothing herein contained shall exonerate the insurer from liability in respect of physical loss or damage to the property insured directly caused by nuclear reaction in any nuclear installation owned or operated by the insured.\n\n**1. OVERVIEW:**\n\nThis clause generally excludes coverage for losses caused by nuclear events. It protects the insurance company from potentially catastrophic losses stemming from nuclear reactions, radiation, or contamination. However, it makes an exception for direct physical damage caused by a nuclear reaction within a nuclear installation owned and operated by the insured.\n\n**2. KEY TERMS:**\n\n*   **Nuclear Reaction:** A process where the nuclei of atoms are altered, often releasing energy (e.g., nuclear fission, nuclear fusion). Think of it as a change at the core of an atom.\n*   **Nuclear Radiation:** Energy emitted from unstable atoms in the form of particles or waves (e.g., alpha, beta, gamma rays). It's the energy released from a nuclear reaction.\n*   **Radioactive Contamination:** The presence of radioactive substances in or on materials, people, or the environment. It's the spread of radioactive material.\n*   **Controlled/Uncontrolled:** Refers to whether the nuclear reaction is managed (e.g., in a nuclear power plant) or not (e.g., a nuclear accident).\n*   **Nuclear Installation:** A facility where nuclear reactions take place, such as a nuclear power plant or a research reactor.\n\n**3. CUSTOMER IMPACT:**\n\n*   **Limited Coverage:** Customers need to understand that their policy generally won't cover damage from nuclear events, whether accidental or intentional.\n*   **Specific Exception:** If the customer owns and operates a nuclear installation, the policy *will* cover direct physical damage to their property caused by a nuclear reaction within that installation. This is a very specific and limited exception.\n*   **Peace of Mind (Generally):** While it might seem scary, this exclusion is standard and protects the insurer (and therefore all policyholders) from potentially unpayable losses.\n\n**4. COMMON QUESTIONS:**\n\n*   **\"Does this mean if there's a nuclear accident, I'm not covered?\"**  \"Generally, yes. This clause excludes losses caused by nuclear events. However, if you own and operate a nuclear installation, there's a specific exception for direct physical damage to your property caused by a nuclear reaction within that installation.\"\n*   **\"What if the nuclear event is caused by terrorism?\"** \"The exclusion still applies, regardless of the cause of the nuclear event.\"\n*   **",
+      "quiz_questions": [
+        {
+          "question": "What is the main purpose of this clause?",
+          "options": [
+            "A) To exclude coverage",
+            "B) To define terms",
+            "C) To specify conditions",
+            "D) All of the above"
+          ],
+          "correct_answer": "D",
+          "explanation": "Policy clauses serve multiple purposes including defining coverage, terms, and conditions."
+        },
+        {
+          "question": "How should agents explain complex clauses to customers?",
+          "options": [
+            "A) Use technical terms",
+            "B) Read word-for-word",
+            "C) Use simple examples",
+            "D) Avoid explanation"
+          ],
+          "correct_answer": "C",
+          "explanation": "Simple examples help customers understand complex insurance concepts better."
+        },
+        {
+          "question": "When should an agent refer to a supervisor?",
+          "options": [
+            "A) Never",
+            "B) For all questions",
+            "C) For complex interpretations",
+            "D) Only for complaints"
+          ],
+          "correct_answer": "C",
+          "explanation": "Complex interpretations require supervisory guidance to ensure accuracy."
+        }
+      ],
+      "key_learning_points": [
+        "Understand the clause's purpose and scope",
+        "Identify key terms that need explanation",
+        "Prepare simple examples for customers",
+        "Know common customer concerns",
+        "Practice clear, confident delivery"
+      ],
+      "target_audience": "Senior Insurance Agents & Underwriters",
+      "difficulty_level": "Advanced",
+      "estimated_duration": "25-30 minutes",
+      "training_objectives": [
+        "Understand the clause's coverage and limitations",
+        "Explain the clause in customer-friendly language",
+        "Address common customer questions confidently"
+      ],
+      "practical_examples": "\nScenario 1: Customer asks about coverage limits\nAgent Response: \"Think of it like this - if your car is worth $20,000 and that's your coverage limit, we'll pay up to that amount if it's totaled.\"\n\nScenario 2: Customer confused about exclusions\nAgent Response: \"Exclusions are like the fine print that says what we don't cover. Let me walk you through the main ones that might affect you.\"\n        ",
+      "role_play_scenarios": "\nRole-Play 1: Concerned First-Time Buyer\nCustomer: \"I don't understand all this legal language. What does this really mean for me?\"\nAgent Focus: Use analogies, speak slowly, check for understanding\n\nRole-Play 2: Experienced Customer with Specific Questions\nCustomer: \"How is this different from my previous policy?\"\nAgent Focus: Make direct comparisons, highlight key differences\n\nRole-Play 3: Budget-Conscious Customer\nCustomer: \"Why do I need to pay for coverage I might never use?\"\nAgent Focus: Explain value proposition, use real examples\n        ",
+      "common_mistakes": "\nCommon Mistake 1: Using too much jargon\nProblem: Customers feel confused and excluded\nSolution: Use everyday language and analogies\n\nCommon Mistake 2: Reading the clause word-for-word\nProblem: Doesn't help customer understanding\nSolution: Paraphrase in simple terms first, then reference original\n\nCommon Mistake 3: Not checking for understanding\nProblem: Customer leaves confused but doesn't ask questions\nSolution: Ask \"Does that make sense?\" and \"What questions do you have?\"\n\nCommon Mistake 4: Making promises beyond the policy\nProblem: Creates false expectations and potential disputes\nSolution: Stick to what's actually covered, refer to policy language\n\nCommon Mistake 5: Getting defensive about exclusions\nProblem: Damages trust and relationship\nSolution: Acknowledge customer concerns, explain rationale calmly\n        ",
+      "assessment_criteria": [
+        "Agent can explain the clause in simple terms",
+        "Agent can identify when the clause applies",
+        "Agent can answer common customer questions",
+        "Agent demonstrates empathy for customer concerns",
+        "Agent follows compliance guidelines"
+      ],
+      "follow_up_resources": [
+        "IRDAI Guidelines on Plain Language Requirements",
+        "Customer Communication Best Practices Guide",
+        "Advanced Policy Interpretation Workshop",
+        "Regulatory Compliance Updates",
+        "Customer Scenario Practice Database"
+      ]
+    },
+    "benchmark_analysis": {
+      "similarity_score": 49,
+      "similar_clauses": [
+        {
+          "text": "Standard claims must be reported within reasonable time",
+          "similarity": 45.0,
+          "category": "claims",
+          "match_type": "keyword"
+        },
+        {
+          "text": "Common exclusions apply to extraordinary circumstances",
+          "similarity": 40.0,
+          "category": "exclusions",
+          "match_type": "keyword"
+        }
+      ],
+      "industry_comparison": {
+        "standard": "Complex language structure typical for insurance",
+        "rating": "Average",
+        "recommendation": "Consider simplifying for better customer understanding"
+      },
+      "analysis_summary": "Limited similarity to standard industry clauses. Best match: 45.0% similarity. Industry rating: Average.",
+      "benchmark_grade": "D",
+      "recommendations": [
+        "Consider aligning language with industry standards",
+        "Consider simplifying for better customer understanding"
+      ]
+    },
+    "regulatory_assessment": {
+      "framework_version": "2024.1",
+      "compliance_status": "REVIEW_REQUIRED",
+      "assessment_timestamp": "2025-06-28T16:16:59.354194",
+      "risk_level": "High"
+    },
+    "enterprise_metadata": {
+      "processing_confidence": 1.0,
+      "quality_assurance_score": 0.94,
+      "audit_trail_id": "audit_76205078f063",
+      "compliance_framework": "IRDAI-2024.1",
+      "processing_metrics": {
+        "performance_metrics": {
+          "processing_time_ms": 31299.22,
+          "tokens_processed": 494,
+          "models_used": 7,
+          "confidence_score": 0.94,
+          "quality_score": 0.91
+        },
+        "efficiency_metrics": {
+          "cost_per_token": 0.0001,
+          "energy_efficiency": "A+",
+          "carbon_footprint": "0.02g CO2",
+          "processing_efficiency": "95.7%"
+        },
+        "compliance_metrics": {
+          "regulatory_checks": 12,
+          "passed_validations": 11,
+          "risk_flags": 1,
+          "audit_trail_complete": true
+        }
+      },
+      "security_classification": "CONFIDENTIAL",
+      "data_retention_policy": "7_years"
+    }
   }
 ]

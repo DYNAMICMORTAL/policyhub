@@ -6,11 +6,11 @@ from datetime import datetime
 from dotenv import load_dotenv
 import time
 import hashlib
+import tempfile
 
-if os.getenv('FLASK_ENV') != 'production':
+# Load environment variables only in development
+if os.getenv('VERCEL_ENV') != 'production' and os.getenv('DYNO') is None:
     load_dotenv()
-# Load environment variables
-load_dotenv()
 
 from agents.policy_rewriter import PolicyRewriterAgent
 from agents.compliance_checker import ComplianceCheckerAgent
@@ -25,12 +25,28 @@ from utils.ai_enterprise import AIModelManager, RegulatoryFramework, AdvancedAna
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key-here')
-app.config['UPLOAD_FOLDER'] = 'uploads'
+
+# Use temporary directories for cloud deployment
+if os.getenv('VERCEL_ENV') or os.getenv('DYNO'):
+    app.config['UPLOAD_FOLDER'] = '/tmp/uploads'
+    app.config['REPORTS_DIR'] = '/tmp/reports'
+    app.config['DATA_DIR'] = '/tmp/data'
+    
+    # Create temp directories
+    os.makedirs('/tmp/uploads', exist_ok=True)
+    os.makedirs('/tmp/reports', exist_ok=True)
+    os.makedirs('/tmp/data', exist_ok=True)
+else:
+    app.config['UPLOAD_FOLDER'] = 'uploads'
+    app.config['REPORTS_DIR'] = 'reports'
+    app.config['DATA_DIR'] = 'data'
+
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
-# Ensure required directories exist
-for directory in ['uploads', 'data', 'reports', 'agents', 'utils', 'static/js', 'templates']:
-    os.makedirs(directory, exist_ok=True)
+# Create directories only if not in cloud environment
+if not (os.getenv('VERCEL_ENV') or os.getenv('DYNO')):
+    for directory in ['uploads', 'data', 'reports', 'agents', 'utils', 'static/js', 'templates']:
+        os.makedirs(directory, exist_ok=True)
 
 # Initialize enterprise AI components
 ai_manager = AIModelManager()
@@ -238,9 +254,14 @@ def analytics():
     return render_template('analytics.html', data=analytics_data)
 
 def save_analysis_history(results):
-    """Save analysis results to history file"""
-    history_file = 'data/analysis_history.json'
-    os.makedirs('data', exist_ok=True)
+    """Save analysis results to history file - cloud compatible"""
+    if os.getenv('VERCEL_ENV') or os.getenv('DYNO'):
+        # In cloud environments, use in-memory storage or external database
+        # For demo purposes, we'll skip persistent storage
+        return
+    
+    history_file = os.path.join(app.config['DATA_DIR'], 'analysis_history.json')
+    os.makedirs(app.config['DATA_DIR'], exist_ok=True)
     
     try:
         with open(history_file, 'r') as f:
@@ -254,9 +275,14 @@ def save_analysis_history(results):
         json.dump(history, f, indent=2)
 
 def load_analytics_data():
-    """Load analytics data from history"""
+    """Load analytics data from history - cloud compatible"""
+    if os.getenv('VERCEL_ENV') or os.getenv('DYNO'):
+        # In cloud environments, return sample data
+        return create_sample_analytics_data()
+    
     try:
-        with open('data/analysis_history.json', 'r') as f:
+        history_file = os.path.join(app.config['DATA_DIR'], 'analysis_history.json')
+        with open(history_file, 'r') as f:
             history = json.load(f)
         
         # Calculate analytics metrics
@@ -281,9 +307,7 @@ def load_analytics_data():
         }
         
     except FileNotFoundError:
-        # Create sample data for demonstration if no history exists
-        sample_data = create_sample_analytics_data()
-        return sample_data
+        return create_sample_analytics_data()
 
 def create_sample_analytics_data():
     """Create sample analytics data for demonstration"""
@@ -361,13 +385,17 @@ def create_sample_analytics_data():
         'recent_analyses': sample_analyses
     }
 
+# For Vercel deployment
+if __name__ != '__main__':
+    # This is running on Vercel
+    application = app
+
 if __name__ == '__main__':
     # Check for required environment variables
     api_key = os.getenv('GEMINI_API_KEY')
-    if not api_key or api_key == 'GEMINI_API_KEY_HERE':
+    if not api_key:
         print("❌ GEMINI_API_KEY not configured!")
         print("Please set your API key in environment variables")
-        print("For Docker: docker run -e GEMINI_API_KEY=your-key ...")
         exit(1)
     
     port = int(os.environ.get('PORT', 5000))

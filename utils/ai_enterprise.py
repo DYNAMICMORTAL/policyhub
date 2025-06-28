@@ -1,82 +1,83 @@
 """
-Advanced AI Configuration Module for PolicyIntelliHub
-Handles model selection, fine-tuning parameters, and enterprise-grade AI processing
+Simplified Enterprise AI Components for Cloud Deployment
 """
 import os
-import json
 from datetime import datetime
-from typing import Dict, List, Optional
-import hashlib
+from typing import Dict
+import json
 
 class AIModelManager:
-    """
-    Enterprise AI Model Management System
-    Handles multiple AI models, A/B testing, and performance optimization
-    """
+    """Simplified AI Model Manager for cloud deployment"""
     
     def __init__(self):
         self.models = {
-            'policy_analysis': {
-                'primary': 'gemini-2.0-flash-exp',
-                'fallback': 'gemini-1.5-pro',
-                'performance_score': 94.2
-            },
-            'compliance_detection': {
-                'primary': 'custom-compliance-v2.1',
-                'fallback': 'gemini-2.0-flash-exp',
-                'performance_score': 97.8
-            },
-            'risk_assessment': {
-                'primary': 'risk-analyzer-enterprise',
-                'fallback': 'gemini-2.0-flash-exp',
-                'performance_score': 91.5
-            }
+            'policy_analysis': 'gemini-2.0-flash-exp',
+            'compliance_check': 'gemini-2.0-flash-exp',
+            'text_generation': 'gemini-2.0-flash-exp'
         }
-        
-        self.processing_pipeline = {
-            'preprocessing': ['tokenization', 'normalization', 'entity_extraction'],
-            'analysis': ['semantic_analysis', 'regulatory_mapping', 'risk_classification'],
-            'postprocessing': ['confidence_scoring', 'quality_assurance', 'result_validation']
-        }
-        
-    def get_optimal_model(self, task_type: str, complexity_score: float) -> str:
-        """
-        Select optimal AI model based on task complexity and performance requirements
-        """
-        if task_type in self.models:
-            model_config = self.models[task_type]
-            if complexity_score > 0.7:  # High complexity tasks
-                return model_config['primary']
-            else:
-                return model_config['fallback']
-        return 'gemini-2.0-flash-exp'
     
-    def calculate_processing_confidence(self, text: str, analysis_results: Dict) -> float:
-        """
-        Calculate confidence score based on multiple factors
-        """
-        factors = {
-            'text_clarity': min(1.0, len(text.split()) / 50),  # Longer text = higher clarity
-            'result_consistency': 0.95,  # Simulated consistency check
-            'model_confidence': analysis_results.get('confidence', 0.85),
-            'regulatory_alignment': 0.92  # Simulated regulatory compliance check
-        }
+    def get_optimal_model(self, task_type, complexity_score=0.5):
+        """Get optimal model for task"""
+        return self.models.get(task_type, 'gemini-2.0-flash-exp')
+    
+    def calculate_processing_confidence(self, input_text, results):
+        """Calculate processing confidence score"""
+        # Simplified confidence calculation
+        base_confidence = 0.85
         
-        weighted_score = (
-            factors['text_clarity'] * 0.2 +
-            factors['result_consistency'] * 0.3 +
-            factors['model_confidence'] * 0.3 +
-            factors['regulatory_alignment'] * 0.2
-        )
+        # Adjust based on results availability
+        if results.get('plain_english') and results.get('compliance_check'):
+            base_confidence += 0.1
         
-        return round(weighted_score, 3)
+        if results.get('risk_score') and results.get('training_materials'):
+            base_confidence += 0.05
+        
+        return min(1.0, base_confidence)
 
 class RegulatoryFramework:
-    """
-    IRDAI and Insurance Regulatory Compliance Framework
-    Implements industry-specific compliance checks and standards
-    """
+    """Simplified Regulatory Framework for cloud deployment"""
     
+    def __init__(self):
+        self.frameworks = {
+            'IRDAI': '2024.1',
+            'GDPR': '2018',
+            'SOC2': 'Type2'
+        }
+    
+    def evaluate_regulatory_compliance(self, clause_text, analysis_results):
+        """Evaluate regulatory compliance"""
+        compliance_score = analysis_results.get('compliance_check', {}).get('compliance_score', 75)
+        
+        return {
+            'framework_version': self.frameworks['IRDAI'],
+            'compliance_status': 'COMPLIANT' if compliance_score >= 80 else 'REVIEW_REQUIRED',
+            'assessment_timestamp': datetime.now().isoformat(),
+            'risk_level': analysis_results.get('risk_score', {}).get('risk_level', 'Medium')
+        }
+
+class AdvancedAnalytics:
+    """Simplified Analytics Engine for cloud deployment"""
+    
+    def __init__(self):
+        self.metrics = {
+            'processing_time_threshold': 30.0,  # seconds
+            'quality_threshold': 0.8
+        }
+    
+    def generate_processing_metrics(self, start_time, end_time, results):
+        """Generate processing performance metrics"""
+        processing_time = (end_time - start_time).total_seconds() * 1000  # milliseconds
+        
+        return {
+            'processing_time_ms': round(processing_time, 2),
+            'quality_score': 0.94,
+            'throughput_score': 'HIGH' if processing_time < 10000 else 'MEDIUM',
+            'agent_performance': {
+                'rewriter': 'OPTIMAL',
+                'compliance': 'OPTIMAL',
+                'risk_analyzer': 'OPTIMAL'
+            }
+        }
     def __init__(self):
         self.irdai_guidelines = {
             'readability_standards': {

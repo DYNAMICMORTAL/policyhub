@@ -1,0 +1,41 @@
+/* Basic styling for PolicyIntelliHub */
+.loading-spinner {
+    display: none;
+}
+
+.agent-tab {
+    border-radius: 10px;
+    margin: 5px;
+}
+
+.risk-high { 
+    background-color: #ffebee; 
+}
+
+.risk-medium { 
+    background-color: #fff3e0; 
+}
+
+.risk-low { 
+    background-color: #e8f5e8; 
+}
+
+.compliance-compliant { 
+    color: #4caf50; 
+}
+
+.compliance-needs_review { 
+    color: #ff9800; 
+}
+
+.compliance-high_risk { 
+    color: #f44336; 
+}
+
+.enterprise-badge {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+}

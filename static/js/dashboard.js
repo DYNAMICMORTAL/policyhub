@@ -239,144 +239,144 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
         // Display Training Materials results (comprehensive version)
-if (data.training_materials) {
-    const training = data.training_materials;
-    
-    // Training module content with better formatting
-    const moduleContent = training.training_module || 'Training module content will be displayed here.';
-    document.getElementById('trainingModule').innerHTML = formatTrainingModule(moduleContent);
-    
-    // Target audience info
-    document.getElementById('targetAudience').textContent = training.target_audience || 'Not specified';
-    document.getElementById('difficultyLevel').textContent = training.difficulty_level || 'Not specified';
-    document.getElementById('estimatedDuration').textContent = training.estimated_duration || 'Not specified';
-    
-    // Quiz questions with better formatting
-    const quizContainer = document.getElementById('quizQuestions');
-    quizContainer.innerHTML = '';
-    if (training.quiz_questions && training.quiz_questions.length > 0) {
-        training.quiz_questions.forEach((question, index) => {
-            const questionDiv = document.createElement('div');
-            questionDiv.className = 'mb-4 p-3 border rounded bg-light';
+        if (data.training_materials) {
+            const training = data.training_materials;
+
+            // Training module content with better formatting
+            const moduleContent = training.training_module || 'Training module content will be displayed here.';
+            const trainingModuleElem = document.getElementById('trainingModule');
+            if (trainingModuleElem) trainingModuleElem.innerHTML = formatTrainingModule(moduleContent);
+
+            // Target audience info
+            const targetAudienceElem = document.getElementById('targetAudience');
+            if (targetAudienceElem) targetAudienceElem.textContent = training.target_audience || 'Not specified';
+            const difficultyLevelElem = document.getElementById('difficultyLevel');
+            if (difficultyLevelElem) difficultyLevelElem.textContent = training.difficulty_level || 'Not specified';
+            const estimatedDurationElem = document.getElementById('estimatedDuration');
+            if (estimatedDurationElem) estimatedDurationElem.textContent = training.estimated_duration || 'Not specified';
+
+            // Quiz questions with better formatting
+            const quizContainer = document.getElementById('quizQuestions');
+            if (quizContainer) {
+                quizContainer.innerHTML = '';
+                if (training.quiz_questions && training.quiz_questions.length > 0) {
+                    training.quiz_questions.forEach((question, index) => {
+                        const questionDiv = document.createElement('div');
+                        questionDiv.className = 'mb-4 p-3 border rounded bg-light';
+
+                        let optionsHtml = '';
+                        if (question.options && Array.isArray(question.options)) {
+                            optionsHtml = question.options.map(opt => `<div class="form-check"><small class="text-muted">${opt}</small></div>`).join('');
+                        }
+
+                        questionDiv.innerHTML = `
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <strong class="text-primary">Q${index + 1}:</strong>
+                                <span class="badge bg-secondary">${training.difficulty_level || 'Standard'}</span>
+                            </div>
+                            <p class="mb-3">${question.question || question}</p>
+                            ${optionsHtml}
+                            ${question.correct_answer ? `<div class="mt-2"><small class="text-success"><strong>Answer:</strong> ${question.correct_answer}</small></div>` : ''}
+                            ${question.explanation ? `<div class="mt-1"><small class="text-info"><strong>Explanation:</strong> ${question.explanation}</small></div>` : ''}
+                        `;
+                        quizContainer.appendChild(questionDiv);
+                    });
+                } else {
+                    quizContainer.innerHTML = '<div class="alert alert-info"><i class="fas fa-info-circle"></i> Quiz questions will be generated based on clause complexity</div>';
+                }
+            }
+
+            // Learning points with icons
+            const learningContainer = document.getElementById('learningPoints');
+            if (learningContainer) {
+                learningContainer.innerHTML = '';
+                if (training.key_learning_points && training.key_learning_points.length > 0) {
+                    training.key_learning_points.forEach((point, index) => {
+                        const pointDiv = document.createElement('div');
+                        pointDiv.className = 'alert alert-light border-start border-primary border-4 mb-2';
+                        pointDiv.innerHTML = `
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-lightbulb text-warning me-2 mt-1"></i>
+                                <div>
+                                    <strong>Key Point ${index + 1}:</strong> ${point}
+                                </div>
+                            </div>
+                        `;
+                        learningContainer.appendChild(pointDiv);
+                    });
+                } else {
+                    learningContainer.innerHTML = '<div class="alert alert-info"><i class="fas fa-info-circle"></i> Learning points will be customized for your training needs</div>';
+                }
+            }
+
+            // Add new training sections (with null checks)
+            if (learningContainer) {
+                addTrainingObjectives(training, learningContainer);
+                addPracticalExamples(training, learningContainer);
+                addRolePlayScenarios(training, learningContainer);
+                addCommonMistakes(training, learningContainer);
+                addAssessmentCriteria(training, learningContainer);
+            }
+        }
+
+        // Display Benchmark Analysis results
+        if (data.benchmark_analysis) {
+            const benchmark = data.benchmark_analysis;
             
-            let optionsHtml = '';
-            if (question.options && Array.isArray(question.options)) {
-                optionsHtml = question.options.map(opt => `<div class="form-check"><small class="text-muted">${opt}</small></div>`).join('');
+            // Similarity score
+            document.getElementById('similarityScore').textContent = benchmark.similarity_score || '--';
+            
+            const qualityElement = document.getElementById('matchQuality');
+            const score = parseFloat(benchmark.similarity_score) || 0;
+            if (score >= 80) {
+                qualityElement.textContent = 'High Match';
+                qualityElement.className = 'badge bg-success';
+            } else if (score >= 60) {
+                qualityElement.textContent = 'Medium Match';
+                qualityElement.className = 'badge bg-warning';
+            } else {
+                qualityElement.textContent = 'Low Match';
+                qualityElement.className = 'badge bg-danger';
             }
             
-            questionDiv.innerHTML = `
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <strong class="text-primary">Q${index + 1}:</strong>
-                    <span class="badge bg-secondary">${training.difficulty_level || 'Standard'}</span>
-                </div>
-                <p class="mb-3">${question.question || question}</p>
-                ${optionsHtml}
-                ${question.correct_answer ? `<div class="mt-2"><small class="text-success"><strong>Answer:</strong> ${question.correct_answer}</small></div>` : ''}
-                ${question.explanation ? `<div class="mt-1"><small class="text-info"><strong>Explanation:</strong> ${question.explanation}</small></div>` : ''}
-            `;
-            quizContainer.appendChild(questionDiv);
-        });
-    } else {
-        quizContainer.innerHTML = '<div class="alert alert-info"><i class="fas fa-info-circle"></i> Quiz questions will be generated based on clause complexity</div>';
+            // Analysis summary
+            document.getElementById('benchmarkSummary').textContent = benchmark.analysis_summary || 'No analysis summary available.';
+            
+            // Similar clauses
+            const similarContainer = document.getElementById('similarClauses');
+            similarContainer.innerHTML = '';
+            if (benchmark.similar_clauses && benchmark.similar_clauses.length > 0) {
+                benchmark.similar_clauses.forEach((clause, index) => {
+                    const clauseDiv = document.createElement('div');
+                    clauseDiv.className = 'mb-2 p-2 border rounded bg-light';
+                    clauseDiv.innerHTML = `
+                        <small class="text-muted">Match ${index + 1} (${clause.similarity || 'N/A'}% similar):</small><br>
+                        <small>${clause.text || clause}</small>
+                    `;
+                    similarContainer.appendChild(clauseDiv);
+                });
+            } else {
+                similarContainer.innerHTML = '<p class="text-muted">No similar clauses found</p>';
+            }
+            
+            // Industry comparison
+            const industryContainer = document.getElementById('industryComparison');
+            industryContainer.innerHTML = '';
+            if (benchmark.industry_comparison) {
+                const comparisonDiv = document.createElement('div');
+                comparisonDiv.className = 'p-3 border rounded bg-light';
+                comparisonDiv.innerHTML = `
+                    <p><strong>Industry Standard:</strong> ${benchmark.industry_comparison.standard || 'Not available'}</p>
+                    <p><strong>Your Clause:</strong> ${benchmark.industry_comparison.rating || 'Not rated'}</p>
+                    <p><strong>Recommendation:</strong> ${benchmark.industry_comparison.recommendation || 'No specific recommendation'}</p>
+                `;
+                industryContainer.appendChild(comparisonDiv);
+            } else {
+                industryContainer.innerHTML = '<p class="text-muted">No industry comparison available</p>';
+            }
+        }
     }
-    
-    // Learning points with icons
-    const learningContainer = document.getElementById('learningPoints');
-    learningContainer.innerHTML = '';
-    if (training.key_learning_points && training.key_learning_points.length > 0) {
-        training.key_learning_points.forEach((point, index) => {
-            const pointDiv = document.createElement('div');
-            pointDiv.className = 'alert alert-light border-start border-primary border-4 mb-2';
-            pointDiv.innerHTML = `
-                <div class="d-flex align-items-start">
-                    <i class="fas fa-lightbulb text-warning me-2 mt-1"></i>
-                    <div>
-                        <strong>Key Point ${index + 1}:</strong> ${point}
-                    </div>
-                </div>
-            `;
-            learningContainer.appendChild(pointDiv);
-        });
-    } else {
-        learningContainer.innerHTML = '<div class="alert alert-info"><i class="fas fa-info-circle"></i> Learning points will be customized for your training needs</div>';
-    }
-    
-    // Add new training sections
-    addTrainingObjectives(training, learningContainer);
-    addPracticalExamples(training, learningContainer);
-    addRolePlayScenarios(training, learningContainer);
-    addCommonMistakes(training, learningContainer);
-    addAssessmentCriteria(training, learningContainer);
-}
-
-// Helper functions for new training sections
-function addTrainingObjectives(training, container) {
-    if (training.training_objectives) {
-        const objectivesContainer = document.createElement('div');
-        objectivesContainer.className = 'mt-4';
-        objectivesContainer.innerHTML = `
-            <h6><i class="fas fa-target text-success"></i> Training Objectives</h6>
-            <div class="alert alert-success">
-                ${training.training_objectives.map((obj, i) => `
-                    <div class="d-flex align-items-start mb-2">
-                        <span class="badge bg-success me-2">${i + 1}</span>
-                        <span>${obj}</span>
-                    </div>
-                `).join('')}
-            </div>
-        `;
-        container.appendChild(objectivesContainer);
-    }
-}
-
-function addPracticalExamples(training, container) {
-    if (training.practical_examples) {
-        const examplesContainer = document.createElement('div');
-        examplesContainer.className = 'mt-4';
-        examplesContainer.innerHTML = `
-            <h6><i class="fas fa-users text-primary"></i> Practical Examples</h6>
-            <div class="alert alert-info">
-                <pre style="white-space: pre-wrap; font-family: inherit; margin-bottom: 0;">${training.practical_examples}</pre>
-            </div>
-        `;
-        container.appendChild(examplesContainer);
-    }
-}
-
-function addRolePlayScenarios(training, container) {
-    if (training.role_play_scenarios) {
-        const scenariosContainer = document.createElement('div');
-        scenariosContainer.className = 'mt-4';
-        scenariosContainer.innerHTML = `
-            <h6><i class="fas fa-theater-masks text-purple"></i> Role-Play Scenarios</h6>
-            <div class="alert alert-secondary">
-                <pre style="white-space: pre-wrap; font-family: inherit; margin-bottom: 0;">${training.role_play_scenarios}</pre>
-            </div>
-        `;
-        container.appendChild(scenariosContainer);
-    }
-}
-
-function addCommonMistakes(training, container) {
-    if (training.common_mistakes) {
-        const mistakesContainer = document.createElement('div');
-        mistakesContainer.className = 'mt-4';
-        mistakesContainer.innerHTML = `
-            <h6><i class="fas fa-exclamation-circle text-warning"></i> Common Mistakes to Avoid</h6>
-            <div class="alert alert-warning">
-                <pre style="white-space: pre-wrap; font-family: inherit; margin-bottom: 0;">${training.common_mistakes}</pre>
-            </div>
-        `;
-        container.appendChild(mistakesContainer);
-    }
-}
-
-function addAssessmentCriteria(training, container) {
-    if (training.assessment_criteria) {
-        const assessmentContainer = document.createElement('div');
-        assessmentContainer.className = 'mt-4';
-        assessmentContainer.innerHTML = `
-            <h6><i class="fas fa-clipboard-check text-info"></i> Assessment Criteria</h6>
+});
             <div class="alert alert-light border-info">
                 ${training.assessment_criteria.map(criteria => `
                     <div class="d-flex align-items-center mb-2">
